@@ -1,21 +1,29 @@
 from cx_Freeze import setup, Executable
 import sys
+import os
 
-# Include additional files and folders
-buildOptions = dict(
-    include_files=[
-        ('dwarf_ble_connect/','./dwarf_ble_connect'),
-        ('Install/','.')
-    ]
-)
+# Determine the base for the executable
+base = 'Win32GUI' if sys.platform == 'win32' else None
 
-# Define the base for a GUI application
-base = 'Win32GUI' if sys.platform=='win32' else None
+# Define additional options for cx_Freeze
+build_exe_options = {
+    "packages": ["os", "sys", "ctypes", "win32com.client"],  # Add any other packages your app uses
+    "excludes": ["tkinter", "unittest"],  # Exclude unnecessary packages
+    "include_files": [
+        ('dwarf_ble_connect/', './dwarf_ble_connect'),
+        ('Install/', '.')
+    ],
+    "include_msvcr": True,  # Include Visual C++ runtime files
+    "optimize": 2,  # Optimize bytecode
+    "compressed": True,  # Compress byte code
+    "bundle_files": 3,  # 3 = don't bundle (default), 2 = bundle everything but Python interpreter, 1 = bundle everything
+}
+
 # Setup function
 setup(
     name="Astro Dwarf Scheduler",
     version="1.0",
     description="Dwarf Astro Scheduler",
-    options = dict(build_exe = buildOptions),
-    executables=[Executable("astro_dwarf_session_UI.py")]
+    options={"build_exe": build_exe_options},
+    executables=[Executable("astro_dwarf_session_UI.py", base=base)]
 )
