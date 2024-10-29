@@ -15,7 +15,6 @@ build_exe_options = {
     ],
     "include_msvcr": True,  # Include Visual C++ runtime files
     "optimize": 2,  # Optimize bytecode
-    "compressed": True,  # Compress byte code
     "bundle_files": 3,  # 3 = don't bundle (default), 2 = bundle everything but Python interpreter, 1 = bundle everything
 }
 
